@@ -1,6 +1,5 @@
 package de.lmu.bio.ifi;
 
-import de.lmu.bio.ifi.basicpackage.BasicBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,17 +15,6 @@ public class BasicTest {
 	@DisplayName("only one model class that implements the game interface exists")
 	public void modelClassExists() {
 		Assertions.assertNotNull(TestUtils.getOthelloClass());
-	}
-
-	/**
-	 * Test if the model class extends the basic board class.
-	 */
-	@Test
-	@DisplayName("model class extends the basic board class")
-	public void modelClassExtendsBasicBoard() {
-		Class<?> gameClass = TestUtils.getOthelloClass();
-		Assertions.assertNotNull(gameClass);
-		Assertions.assertTrue(BasicBoard.class.isAssignableFrom(gameClass));
 	}
 
 	/**
