@@ -1,5 +1,9 @@
 package de.lmu.bio.ifi;
 
+import szte.mi.Move;
+
+import java.util.List;
+
 public interface Game {
 
 	/**
@@ -18,4 +22,13 @@ public interface Game {
 	 * @return the current game status.
 	 */
 	public GameStatus gameStatus();
+
+	/**
+	 * Get all possible moves for the current player.
+	 * Return null if it is not the turn of the given player.
+	 * The list is empty if there are no possible moves.
+	 *
+	 * @return a list of all possible moves.
+	 */
+	public List<Move> getPossibleMoves(boolean playerOne);
 }
