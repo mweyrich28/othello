@@ -1,0 +1,76 @@
+image: maven:3-openjdk-11
+
+workflow:
+  name: "Workflow for the Othello assignment"
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^verify\//
+    - if: $CI_COMMIT_BRANCH =~ /^grading\//
+
+stages:
+    - build
+    - test
+    - check-jar
+
+# install the java dependencies
+install-dependencies:
+  stage: build
+  script:
+    - mvn install -DskipTests
+
+# test the othello model class structure
+model-class-structure:
+    stage: test
+    rules:
+      - if: $CI_COMMIT_BRANCH =~ /^verify\/model/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+    script:
+        - mvn test -Dtest="BasicTest"
+    when: always
+
+# test the othello model correctness
+model-correctness:
+    stage: test
+    rules:
+      - if: $CI_COMMIT_BRANCH =~ /^verify\/model/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+    script:
+        - mvn test -Dtest="ModelTest"
+    when: always
+
+# test the othello model by following a certain game sequence
+game-sequence:
+    stage: test
+    rules:
+      - if: $CI_COMMIT_BRANCH =~ /^verify\/model/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+    script:
+        - mvn test -Dtest="GameSequenceTest"
+    when: always
+
+# test whether a single jar file exists within the ./jar/ directory
+jar-exists:
+    stage: check-jar
+    rules:
+      - if: $CI_COMMIT_BRANCH =~ /^verify\/jar/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+    script:
+        - /bin/bash ./src/test/test-jar-exists.sh
+    when: always
+
+jar-has-sources:
+    stage: check-jar
+    rules:
+      - if: $CI_COMMIT_BRANCH =~ /^verify\/jar/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+    script:
+        - /bin/bash ./src/test/test-jar-sources.sh
+    when: always
+
+jar-is-executable:
+    stage: check-jar
+    rules:
+      - if: $CI_COMMIT_BRANCH =~ /^verify\/jar/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+    script:
+        - /bin/bash ./src/test/test-jar-executable.sh
+    when: always
