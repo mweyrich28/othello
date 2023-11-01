@@ -22,7 +22,7 @@ model-class-structure:
     stage: test
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^verify\/model/
-      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\//
     script:
         - mvn test -Dtest="BasicTest"
     when: always
@@ -32,7 +32,7 @@ model-correctness:
     stage: test
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^verify\/model/
-      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\//
     script:
         - mvn test -Dtest="ModelTest"
     when: always
@@ -42,7 +42,7 @@ game-sequence:
     stage: test
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^verify\/model/
-      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\//
     script:
         - mvn test -Dtest="GameSequenceTest"
     when: always
@@ -52,7 +52,7 @@ jar-exists:
     stage: check-jar
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^verify\/jar/
-      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\//
     script:
         - /bin/bash ./src/test/test-jar-exists.sh
     when: always
@@ -61,7 +61,7 @@ jar-has-sources:
     stage: check-jar
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^verify\/jar/
-      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\//
     script:
         - /bin/bash ./src/test/test-jar-sources.sh
     when: always
@@ -70,7 +70,7 @@ jar-is-executable:
     stage: check-jar
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^verify\/jar/
-      - if: $CI_COMMIT_BRANCH =~ /^grading\/
+      - if: $CI_COMMIT_BRANCH =~ /^grading\//
     script:
         - /bin/bash ./src/test/test-jar-executable.sh
     when: always
