@@ -2,6 +2,7 @@ package de.lmu.bio.ifi;
 import de.lmu.bio.ifi.basicpackage.BasicBoard;
 import szte.mi.Move;
 
+import javax.swing.*;
 import java.util.*;
 
 public class OthelloGame extends BasicBoard implements Game {
@@ -279,6 +280,11 @@ public class OthelloGame extends BasicBoard implements Game {
                     possibleMoves.add(new Move(cord[0], cord[1]));
                 }
             }
+        }
+
+        System.out.println("Possible moves for Player " + currPlayer);
+        for (Move m : possibleMoves) {
+            System.out.println("(" + m.x + "/" + m.y + ")");
         }
 
         return possibleMoves;
