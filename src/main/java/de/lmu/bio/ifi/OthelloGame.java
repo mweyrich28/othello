@@ -2,12 +2,10 @@ package de.lmu.bio.ifi;
 import de.lmu.bio.ifi.basicpackage.BasicBoard;
 import szte.mi.Move;
 
-import javax.swing.*;
 import java.util.*;
 
 public class OthelloGame extends BasicBoard implements Game {
     final private int GAMESIZE = 8;
-    private int movesMade = 0;
     private int currPlayer = 1;
     private int currOpponent = 2;
     // {x, y}                       right  down     up     left     dtl     dbr    dbl      dtr
@@ -101,9 +99,6 @@ public class OthelloGame extends BasicBoard implements Game {
 
         for (Move move : validMoves) {
             if (move.x == x && move.y == y){
-
-                // increment moves made
-                movesMade++;
 
                 getBoard()[x][y] = currPlayer;
 
