@@ -38,6 +38,10 @@ public class OthelloGame extends BasicBoard implements Game {
         return directions;
     }
 
+    public int getCurrPlayer() {
+        return currPlayer;
+    }
+
     public void initGameBoard(){
         for (int i = 0; i < GAMESIZE; i++) {
             for (int j = 0; j < GAMESIZE; j++) {
@@ -94,6 +98,10 @@ public class OthelloGame extends BasicBoard implements Game {
             return false;
         }
         if (validMoves.size() == 0) {
+            // switch player state
+            int tempVar = currOpponent;
+            currOpponent = currPlayer;
+            currPlayer = tempVar;
             return false;
         }
 
@@ -115,6 +123,7 @@ public class OthelloGame extends BasicBoard implements Game {
                 currOpponent = currPlayer;
                 currPlayer = tempVar;
 
+                //System.out.println(gameStatus().toString());
                 return true;
             }
         }
@@ -132,8 +141,11 @@ public class OthelloGame extends BasicBoard implements Game {
         ArrayList<Move> movesX = (ArrayList<Move>) getPossibleMoves(true);
         ArrayList<Move> movesO = (ArrayList<Move>) getPossibleMoves(false);
 
+        if (movesX == null) { movesX = new ArrayList<>(); }
+        if (movesO == null) { movesO = new ArrayList<>(); }
+
         if(movesX.size() == 0 && movesO.size() == 0){ // no more moves possible
-            int[] pieceCount = countPiecesOnBoard();
+            int[] pieceCount = countPiecesOnBoard(); // [countX, countO]
             if (pieceCount[0] > pieceCount[1]){ // xCount > oCount?
                return GameStatus.PLAYER_1_WON;
             }
@@ -277,10 +289,6 @@ public class OthelloGame extends BasicBoard implements Game {
             }
         }
 
-        System.out.println("Possible moves for Player " + currPlayer);
-        for (Move m : possibleMoves) {
-            System.out.println("(" + m.x + "/" + m.y + ")");
-        }
 
         return possibleMoves;
     }

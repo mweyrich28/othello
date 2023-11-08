@@ -39,9 +39,21 @@ public class Runner {
         ArrayList<Integer[]> moveAnchors = o.getAnchorNodes(true);
 
         int c = 0;
-        for (Move cord : moves) {
-                o.makeMove(c%2 == 0, cord.x, cord.y);
-                c++;
+        while (o.gameStatus() == GameStatus.RUNNING){
+            ArrayList<Move> possibleMoves = (ArrayList<Move>) o.getPossibleMoves(c%2==0);
+            System.out.println("Possible moves for Player " + o.getCurrPlayer());
+            for (Move m : possibleMoves) {
+                System.out.println("(" + m.x + "/" + m.y + ")");
+            }
+            o.makeMove(c%2==0, possibleMoves.get(0).x, possibleMoves.get(0).y);
+            c++;
         }
+        System.out.println(o.gameStatus());
+
+        // int c = 0;
+        // for (Move cord : moves) {
+        //         o.makeMove(c%2 == 0, cord.x, cord.y);
+        //         c++;
+        // }
     }
 }
