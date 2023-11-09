@@ -281,9 +281,9 @@ public class OthelloGame extends BasicBoard implements Game {
 
         for (Integer[] cord : moveAnchors) {
             for (int[] direction : getDirections()) {
-                String cordinate = cord[0] + "," + cord[1];
-                if (checkForPieces(cord[0], cord[1], direction) && !seenCoordinates.contains(cordinate)) {
-                    seenCoordinates.add(cordinate);
+                String coordinate = cord[0] + "," + cord[1];
+                if (checkForPieces(cord[0], cord[1], direction) && !seenCoordinates.contains(coordinate)) {
+                    seenCoordinates.add(coordinate);
                     possibleMoves.add(new Move(cord[0], cord[1]));
                 }
             }
