@@ -1,5 +1,6 @@
 package de.lmu.bio.ifi;
 
+import javafx.application.Application;
 import szte.mi.Move;
 
 import java.io.*;
@@ -30,38 +31,13 @@ public class Runner {
         return list;
     }
 
-    public static void main(String args[]) throws FileNotFoundException {
+    public static void main(String args[]) throws Exception {
 
         // FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
         // ArrayList<Move> moves = readMoves(reader);
 
-        OthelloGame o = new OthelloGame(0);
-        System.out.println(o.toString());
 
         int c = 0;
-        KI1 p1 = new KI1();
-        KI1 p2 = new KI1();
-
-        p1.init(0, 8000, new Random());
-        p2.init(1, 8000, new Random());
-
-        Move last = null;
-        while (o.gameStatus() == GameStatus.RUNNING){
-            long p1Time = p1.getTimeLeft();
-            long p2Time = p2.getTimeLeft();
-
-            last = p1.nextMove(last,p2Time, p1Time);
-            o.makeMove(true, last.x, last.y);
-            last = p2.nextMove(last,p1Time, p2Time);
-            o.makeMove(false, last.x, last.y);
-
-        }
-        System.out.println(o.gameStatus());
-
-        // int c = 0;
-        // for (Move cord : moves) {
-        //         o.makeMove(c%2 == 0, cord.x, cord.y);
-        //         c++;
-        // }
+        OthelloGui.main(args);
     }
 }
