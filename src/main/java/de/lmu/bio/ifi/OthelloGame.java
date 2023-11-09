@@ -15,6 +15,11 @@ public class OthelloGame extends BasicBoard implements Game {
     public OthelloGame(){
         super.board = new int[GAMESIZE][GAMESIZE];
         initGameBoard(); // fill board with Zeros
+        // flip if order is 1
+        //if (order == 1){
+        //    currPlayer = 2;
+        //    currOpponent = 1;
+        //}
     }
 
     public int[] countPiecesOnBoard(){
@@ -112,7 +117,7 @@ public class OthelloGame extends BasicBoard implements Game {
 
                 // flip all
                 flip(move);
-                System.out.println(this.toString());
+                //System.out.println(this.toString());
 
 
                 // add to history
