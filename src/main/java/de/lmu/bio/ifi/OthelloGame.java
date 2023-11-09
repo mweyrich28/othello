@@ -14,9 +14,14 @@ public class OthelloGame extends BasicBoard implements Game {
     private final int[][] directions = {{1,0}, {0,1}, {0,-1}, {-1,0}, {-1,-1}, {1,1}, {1,-1}, {-1,1}};
     private ArrayList<Move> moveHistroy = new ArrayList<>();
 
-    public OthelloGame(){
+    public OthelloGame(int order){
         super.board = new int[GAMESIZE][GAMESIZE];
         initGameBoard(); // fill board with Zeros
+        // flip if order is 1
+        if (order == 1){
+            currPlayer = 2;
+            currOpponent = 1;
+        }
     }
 
     public int[] countPiecesOnBoard(){
