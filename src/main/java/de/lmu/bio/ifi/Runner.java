@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 public class Runner {
 
@@ -34,19 +35,27 @@ public class Runner {
         FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
         ArrayList<Move> moves = readMoves(reader);
 
-        OthelloGame o = new OthelloGame();
+        OthelloGame o = new OthelloGame(0);
         System.out.println(o.toString());
         ArrayList<Integer[]> moveAnchors = o.getAnchorNodes(true);
 
         int c = 0;
+        KI1 p1 = new KI1();
+        KI1 p2 = new KI1();
+
+        p1.init(0, 8000, new Random());
+        p2.init(1, 8000, new Random());
+
+        Move last = null;
         while (o.gameStatus() == GameStatus.RUNNING){
-            ArrayList<Move> possibleMoves = (ArrayList<Move>) o.getPossibleMoves(c%2==0);
-            System.out.println("Possible moves for Player " + o.getCurrPlayer());
-            for (Move m : possibleMoves) {
-                System.out.println("(" + m.x + "/" + m.y + ")");
-            }
-            o.makeMove(c%2==0, possibleMoves.get(0).x, possibleMoves.get(0).y);
-            c++;
+            long p1Time = p1.getTimeLeft();
+            long p2Time = p2.getTimeLeft();
+
+            last = p1.nextMove(last,p2Time, p1Time);
+            o.makeMove(true, last.x, last.y);
+            last = p2.nextMove(last,p1Time, p2Time);
+            o.makeMove(false, last.x, last.y);
+
         }
         System.out.println(o.gameStatus());
 
