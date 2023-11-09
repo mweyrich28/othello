@@ -31,12 +31,11 @@ public class Runner {
 
     public static void main(String args[]) throws FileNotFoundException {
 
-        FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
-        ArrayList<Move> moves = readMoves(reader);
+        // FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
+        // ArrayList<Move> moves = readMoves(reader);
 
         OthelloGame o = new OthelloGame();
         System.out.println(o.toString());
-        ArrayList<Integer[]> moveAnchors = o.getAnchorNodes(true);
 
         int c = 0;
         while (o.gameStatus() == GameStatus.RUNNING){
