@@ -1,7 +1,10 @@
-package de.lmu.bio.ifi;
+package szte.mi;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import de.lmu.bio.ifi.OthelloGame;
+import de.lmu.bio.ifi.PlayerType;
 import szte.mi.Move;
 import szte.mi.Player;
 
