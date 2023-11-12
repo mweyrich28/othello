@@ -7,6 +7,7 @@ import java.util.*;
 public class OthelloGame extends BasicBoard implements Game {
     final private int GAMESIZE = 8;
     private int currPlayer = 1;
+    private int order;
     private int currOpponent = 2;
     // {x, y}                       right  down     up     left     dtl     dbr    dbl      dtr
     private final int[][] directions = {{1,0}, {0,1}, {0,-1}, {-1,0}, {-1,-1}, {1,1}, {1,-1}, {-1,1}};
@@ -15,11 +16,11 @@ public class OthelloGame extends BasicBoard implements Game {
     public OthelloGame(){
         super.board = new int[GAMESIZE][GAMESIZE];
         initGameBoard(); // fill board with Zeros
-        // flip if order is 1
-        //if (order == 1){
-        //    currPlayer = 2;
-        //    currOpponent = 1;
-        //}
+        this.order = order;
+    }
+
+    public int getOrder() {
+        return order;
     }
 
     public int[] countPiecesOnBoard(){
@@ -102,13 +103,15 @@ public class OthelloGame extends BasicBoard implements Game {
         if (validMoves == null){
             return false;
         }
+        /* temporary diable this part
         if (validMoves.size() == 0) {
             // switch player state
             int tempVar = currOpponent;
-            currOpponent = currPlayer;
-            currPlayer = tempVar;
+            this.currOpponent = currPlayer;
+            this.currPlayer = tempVar;
             return false;
         }
+        */
 
         for (Move move : validMoves) {
             if (move.x == x && move.y == y){
@@ -117,9 +120,6 @@ public class OthelloGame extends BasicBoard implements Game {
 
                 // flip all
                 flip(move);
-                //System.out.println(this.toString());
-
-
                 // add to history
                 moveHistroy.add(move);
 
@@ -128,7 +128,14 @@ public class OthelloGame extends BasicBoard implements Game {
                 currOpponent = currPlayer;
                 currPlayer = tempVar;
 
-                //System.out.println(gameStatus().toString());
+                // now check if next player has at least one move
+                if (getPossibleMoves(currPlayer % 2 != 0).size() == 0){
+                    // switch game status back to prev player
+                    tempVar = currOpponent;
+                    currOpponent = currPlayer;
+                    currPlayer = tempVar;
+                }
+
                 return true;
             }
         }
@@ -152,7 +159,7 @@ public class OthelloGame extends BasicBoard implements Game {
         if(movesX.size() == 0 && movesO.size() == 0){ // no more moves possible
             int[] pieceCount = countPiecesOnBoard(); // [countX, countO]
             if (pieceCount[0] > pieceCount[1]){ // xCount > oCount?
-               return GameStatus.PLAYER_1_WON;
+                return GameStatus.PLAYER_1_WON;
             }
             else if (pieceCount[0] < pieceCount[1]) {
                 return GameStatus.PLAYER_2_WON;
