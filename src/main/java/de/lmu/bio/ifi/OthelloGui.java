@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class OthelloGui extends Application {
     Player p1;
-    Player p2;
+    KI_Random p2;
     Move lastMove;
     // Global score for both players
     private int scoreP1 = 0;
@@ -54,7 +54,10 @@ public class OthelloGui extends Application {
             Circle circle = new Circle(30); // Create a circle with radius 30
             circle.setFill(localGame.getCurrPlayer() == 1 ? Color.BLACK : Color.WHITE); // Set color based on player
 
-            if (p1 == null && p2 == null) { // Handle if player vs player
+            ////////////////////////////////////////////////////////////
+            ////////               PLAYER vs PLAYER             ////////
+            ////////////////////////////////////////////////////////////
+            if (p2 == null) { // Handle if player vs player
                 // if the move is valid, update button and local game
                 if (localGame.makeMove(localGame.getCurrPlayer() % 2 != 0, this.x, this.y)) {
                     // make piece appear on button
@@ -63,27 +66,66 @@ public class OthelloGui extends Application {
                     updateGUI(localGame);
                     // show game state
                     updateInfoLog();
-                    System.out.println(localGame.gameStatus().toString());
                 }
-            } else if (p1 == null && p2 != null) { // player vs KI
-                Move last;
-                if (localGame.makeMove(localGame.getCurrPlayer() % 2 != 0, this.x, this.y)) {
-                    // move is valid, so we save it as last move for the opponent to process
-                    last = new Move(this.x, this.y);
-                    // make piece appear on button
-                    this.button.setGraphic(circle);
-                    // update gameBoardArray
-                    updateGUI(localGame);
-                    updateInfoLog();
+            }
+            ////////////////////////////////////////////////////////////
+            ////////               PLAYER vs KI                 ////////
+            ////////////////////////////////////////////////////////////
+            else if (p2 != null) {
+                Move last = null;
+                ArrayList<Move> currentPossMoves = (ArrayList<Move>) localGame.getPossibleMoves(localGame.getCurrPlayer() % 2 != 0);
+                // check if current player has moves
+                if(currentPossMoves != null)
+                {
+                    // check if curr player has to pass
+                    if(!(currentPossMoves.size() == 0))
+                    {
+                        // check if move is valid
+                        if (localGame.makeMove(localGame.getCurrPlayer() % 2 != 0, this.x, this.y))
+                        {
+                            // move is valid, so we save it as last move for the opponent to process
+                            last = new Move(this.x, this.y);
 
+                            // make piece appear on button
+                            this.button.setGraphic(circle);
+
+                            // update gameBoardArray
+                            updateGUI(localGame);
+                            updateInfoLog();
+                            // After this the current player has made a valid move
+                            // makeMove automatically updated the current player and current opponent
+                            // if not, move is null
+                        }
+                    }
 
                     // here player class two makes a move
-                    Move randomMove = p2.nextMove(last, 8000, 8);
-                    if (randomMove != null) {
-                        last = new Move(randomMove.x, randomMove.y);
-                        localGame.makeMove(false, last.x, last.y);
-                        updateGUI(localGame);
-                        updateInfoLog();
+                    // if there was a pre move, then that move is passed to KI player
+                    // if not, null is passed as move
+                    currentPossMoves = (ArrayList<Move>) localGame.getPossibleMoves(localGame.getCurrPlayer() % 2 != 0);
+                    // check if KI has valid moves
+                    if (currentPossMoves.size() != 0){
+                        Move randomMove = p2.nextMove(last, 8000, 8);
+                        if (randomMove != null) {
+                            // here we update the gui game
+                            last = new Move(randomMove.x, randomMove.y);
+                            localGame.makeMove(false, last.x, last.y);
+                            updateGUI(localGame);
+                            updateInfoLog();
+                            // now we check if player 1 has more than 0 moves
+                            currentPossMoves = (ArrayList<Move>) localGame.getPossibleMoves(localGame.getCurrPlayer() % 2 != 0);
+                            while (currentPossMoves.size() == 0) {
+                                System.out.println("Player 2 moved twice");
+                                randomMove = p2.nextMove(last, 8000, 8);
+                                last = new Move(randomMove.x, randomMove.y);
+                                localGame.makeMove(false, last.x, last.y);
+                                updateInfoLog();
+                                currentPossMoves = (ArrayList<Move>) localGame.getPossibleMoves(localGame.getCurrPlayer() % 2 != 0);
+                                if (currentPossMoves == null){
+                                    break;
+                                }
+                            }
+
+                        }
                     }
                 }
             }
@@ -111,9 +153,6 @@ public class OthelloGui extends Application {
             int newOrder = currOrder == 1 ? 0 : 1; // flip order
             localGame = new OthelloGame(newOrder);
             purgeBoard();
-            updateGUI(localGame);
-            updateInfoLog();
-
         }
     }
 
@@ -126,16 +165,12 @@ public class OthelloGui extends Application {
     }
 
     public void purgeBoard() {
-        primaryStage.setScene(new Scene(initGame()));
-        primaryStage.show();
-        // for (int i = 0; i < gameBoardArray.length; i++) {
-        //     for (int j = 0; j < gameBoardArray.length; j++) {
-        //         Button button = new Button();
-        //         button.setPrefSize(100, 100);
-        //         gameBoardArray[j][i] = button;
-        //         button.addEventHandler(ActionEvent.ACTION, new PlayButtonHandler(button, j, i));
-        //     }
-        // }
+        if (p1 == null && p2 == null){
+            playerVSplayer();
+        } else
+        {
+            playerVSKI();
+        }
     }
 
     // method for printing the game state if won / draw
@@ -156,7 +191,7 @@ public class OthelloGui extends Application {
         }
 
         String playerInfoText = "Next Piece to place:";
-        String playerScoreText = "\nScore:\nBLACK: [" + getScoreP1() + "]" + "\nWHITE: [" + getScoreP2() + "]";
+        String playerScoreText = "\nScore:\nP1 → BLACK: [" + getScoreP1() + "]" + "\nP2 → WHITE: [" + getScoreP2() + "]";
 
         Label headerLable = new Label(header);
         headerLable.setStyle("-fx-underline: true; -fx-font-weight: bold; -fx-text-fill: white");
@@ -172,14 +207,6 @@ public class OthelloGui extends Application {
         infoLog.getChildren().clear();
         infoLog.getChildren().addAll(headerLable, playerInfo, playerPiece, scoreLable, winnerLable);
         checkCurrGameForWinner();
-    }
-
-    private void showScore(Label headerLable, Label playerInfo, Circle playerPiece, Label scoreLable, Label winnerLable) {
-        Platform.runLater(() -> {
-            infoLog.getChildren().clear();
-            infoLog.getChildren().addAll(headerLable, playerInfo, playerPiece, scoreLable, winnerLable);
-            checkCurrGameForWinner();
-        });
     }
 
     // Initializes game scene
@@ -215,6 +242,8 @@ public class OthelloGui extends Application {
             Stage stage = (Stage) restartGame.getScene().getWindow();
             stage.close();
             start(new Stage());
+            this.p1 = null;
+            this.p2 = null;
         });
 
         // return finished scene
@@ -300,12 +329,21 @@ public class OthelloGui extends Application {
         KI_Random p2 = new KI_Random();
         this.p2 = p2;
 
+        // switch order so starting player alternates
+        // int newOrder = localGame.getOrder() == 1 ? 0 : 1;
+        // p2.init(newOrder, 8000, new Random());
         p2.init(1, 8000, new Random());
-
-        OthelloGame o = new OthelloGame(0);
         primaryStage.setScene(new Scene(initGame()));
         updateGUI(this.localGame);
-        showPossibleMoves( (ArrayList<Move>) this.localGame.getPossibleMoves(true));
+        showPossibleMoves((ArrayList<Move>) this.localGame.getPossibleMoves(localGame.getCurrPlayer() % 2 != 0));
+        // KI makes first move if order == 1
+        //if(this.localGame.getOrder() == 1){
+        //    this.lastMove = p2.nextMove(this.lastMove, 8, 8000);
+        //    localGame.makeMove(true, lastMove.x, lastMove.y);
+        //}
+        updateGUI(this.localGame);
+        updateInfoLog();
+        showPossibleMoves((ArrayList<Move>) this.localGame.getPossibleMoves(localGame.getCurrPlayer() % 2 != 0));
         primaryStage.show();
     }
 
