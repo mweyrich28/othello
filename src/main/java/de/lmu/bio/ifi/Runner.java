@@ -1,6 +1,7 @@
 package de.lmu.bio.ifi;
 
 import javafx.application.Application;
+import szte.mi.KI_Random;
 import szte.mi.Move;
 
 import java.io.*;
@@ -36,6 +37,7 @@ public class Runner {
         FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
         ArrayList<Move> moves = readMoves(reader);
         OthelloGame o = new OthelloGame(1);
+        KI_Random p2 = new KI_Random();
         int c = 0;
         // for (Move m : moves) {
         //     o.makeMove(c%2==0, m.x, m.y);
@@ -59,7 +61,6 @@ public class Runner {
         //         System.out.println("Moves for player 2: " +o.getPossibleMoves(false).size());
         //     }
         //     c++;
-        //     System.out.println(o.gameStatus().toString());
         // }
         OthelloGui.main(args);
     }
