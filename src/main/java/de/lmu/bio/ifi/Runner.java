@@ -35,7 +35,7 @@ public class Runner {
 
         FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
         ArrayList<Move> moves = readMoves(reader);
-        OthelloGame o = new OthelloGame(0);
+        OthelloGame o = new OthelloGame(1);
         int c = 0;
         // for (Move m : moves) {
         //     o.makeMove(c%2==0, m.x, m.y);
