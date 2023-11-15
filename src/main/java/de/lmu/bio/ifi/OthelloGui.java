@@ -1,4 +1,7 @@
 package de.lmu.bio.ifi;
+import szte.mi.Move;
+import szte.mi.Player;
+import szte.mi.KI_Random;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

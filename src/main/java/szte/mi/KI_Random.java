@@ -1,4 +1,4 @@
-package de.lmu.bio.ifi;
+package szte.mi;
 
 import java.util.ArrayList;
 import java.util.Random;
