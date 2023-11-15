@@ -2,8 +2,9 @@ package szte.mi;
 
 import java.util.ArrayList;
 import java.util.Random;
-import szte.mi.Move;
-import szte.mi.Player;
+
+import de.lmu.bio.ifi.OthelloGame;
+import de.lmu.bio.ifi.PlayerType;
 
 public class KI_Random implements Player {
     private long timeLeft;
