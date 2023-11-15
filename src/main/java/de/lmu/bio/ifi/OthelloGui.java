@@ -124,7 +124,6 @@ public class OthelloGui extends Application {
                                     break;
                                 }
                             }
-
                         }
                     }
                 }
