@@ -20,6 +20,10 @@ public class KI_Random implements Player {
         return timeLeft;
     }
 
+    public OthelloGame getOthelloGame() {
+        return othelloGame;
+    }
+
     public void init(int order, long t, java.util.Random rnd){
         this.othelloGame = new OthelloGame(order);
         this.timeLeft = t;
@@ -35,12 +39,12 @@ public class KI_Random implements Player {
         this.points+=points;
     }
     public Move nextMove(Move prevMove, long tOpponent, long t){
-        if (prevMove != null){ // append move to game
+        if (prevMove != null){ // append move to local game
             othelloGame.makeMove(order==1, prevMove.x, prevMove.y);
         }
 
         // react to a previous move
-        ArrayList<Move> possibleMoves = (ArrayList<Move>) othelloGame.getPossibleMoves(order==0);
+        ArrayList<Move> possibleMoves = (ArrayList<Move>) othelloGame.getPossibleMoves(othelloGame.getCurrPlayer() % 2 != 0);
         int randomMove;
         if(possibleMoves != null && possibleMoves.size() >= 1) {
             randomMove = this.rnd.nextInt(possibleMoves.size());
