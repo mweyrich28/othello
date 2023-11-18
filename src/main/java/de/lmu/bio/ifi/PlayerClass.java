@@ -12,7 +12,6 @@ public class PlayerClass implements Player {
         private OthelloGame othelloGame;
         private int order;
         private int points;
-        private PlayerType playerType;
 
         public long getTimeLeft() {
             return timeLeft;
@@ -23,12 +22,8 @@ public class PlayerClass implements Player {
             this.timeLeft = t;
             this.rnd = rnd;
             this.order = order;
-            this.playerType = PlayerType.PLAYER;
         }
 
-    public PlayerType getPlayerType() {
-        return playerType;
-    }
 
     public void incrementPoints(int points){
             this.points+=points;

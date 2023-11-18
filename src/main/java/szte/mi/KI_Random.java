@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import de.lmu.bio.ifi.OthelloGame;
-import de.lmu.bio.ifi.PlayerType;
-import szte.mi.Move;
-import szte.mi.Player;
 
 public class KI_Random implements Player {
     private long timeLeft;
     private Random rnd;
     private OthelloGame othelloGame;
     private int order;
-    private PlayerType playerType;
     private int points;
 
     public long getTimeLeft() {
@@ -29,10 +25,6 @@ public class KI_Random implements Player {
         this.timeLeft = t;
         this.rnd = rnd;
         this.order = order;
-        this.playerType = PlayerType.RANDOM;
-    }
-    public PlayerType getPlayerType() {
-        return playerType;
     }
 
     public void incrementPoints(int points){
@@ -40,7 +32,7 @@ public class KI_Random implements Player {
     }
     public Move nextMove(Move prevMove, long tOpponent, long t){
         if (prevMove != null){ // append move to local game
-            othelloGame.makeMove(order==1, prevMove.x, prevMove.y);
+            othelloGame.makeMove(othelloGame.getCurrPlayer() % 2 != 0, prevMove.x, prevMove.y);
         }
 
         // react to a previous move

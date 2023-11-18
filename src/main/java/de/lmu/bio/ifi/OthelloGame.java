@@ -7,8 +7,10 @@ import java.util.*;
 public class OthelloGame extends BasicBoard implements Game {
     final private int GAMESIZE = 8;
     private int currPlayer = 1;
+    private GameStatus status;
     private int order;
     private int currOpponent = 2;
+    private int movesPassed = 0;
     // {x, y}                       right  down     up     left     dtl     dbr    dbl      dtr
     private final int[][] directions = {{1,0}, {0,1}, {0,-1}, {-1,0}, {-1,-1}, {1,1}, {1,-1}, {-1,1}};
     private ArrayList<Move> moveHistroy = new ArrayList<>();
@@ -17,6 +19,22 @@ public class OthelloGame extends BasicBoard implements Game {
         super.board = new int[GAMESIZE][GAMESIZE];
         initGameBoard(); // fill board with Zeros
         this.order = order;
+    }
+    public OthelloGame(){
+        super.board = new int[GAMESIZE][GAMESIZE];
+        initGameBoard(); // fill board with Zeros
+    }
+
+    public int getCurrOpponent() {
+        return currOpponent;
+    }
+
+    public Move getPrevMove(){
+        return this.moveHistroy.get(this.moveHistroy.size()-1);
+    }
+
+    public ArrayList<Move> getMoveHistroy() {
+        return moveHistroy;
     }
 
     public int getOrder() {
@@ -103,44 +121,42 @@ public class OthelloGame extends BasicBoard implements Game {
         if (validMoves == null){
             return false;
         }
-        /* temporary diable this part
-        if (validMoves.size() == 0) {
-            // switch player state
-            int tempVar = currOpponent;
-            this.currOpponent = currPlayer;
-            this.currPlayer = tempVar;
-            return false;
+        // increment counter for moves passed
+        else if (validMoves.size() == 0){
+            movesPassed++;
+            System.out.println(this);
+            System.out.println(playerOne + " had to pass: " + movesPassed);
         }
-        */
+        else
+        {
+            for (Move move : validMoves) {
+                if (move.x == x && move.y == y) {
+                    getBoard()[x][y] = currPlayer;
 
-        for (Move move : validMoves) {
-            if (move.x == x && move.y == y){
+                    // flip all
+                    flip(move);
+                    // add to history
+                    moveHistroy.add(move);
+                    movesPassed = 0; // reset counter
+                    status = gameStatus();
 
-                getBoard()[x][y] = currPlayer;
-
-                // flip all
-                flip(move);
-                // add to history
-                moveHistroy.add(move);
-
-                // switch player state
-                int tempVar = currOpponent;
-                currOpponent = currPlayer;
-                currPlayer = tempVar;
-
-                // now check if next player has at least one move
-                if (getPossibleMoves(currPlayer % 2 != 0).size() == 0){
-                    // switch game status back to prev player
-                    tempVar = currOpponent;
+                    // switch player state
+                    int tempVar = currOpponent;
                     currOpponent = currPlayer;
                     currPlayer = tempVar;
-                }
 
-                return true;
+                    // now check if next player has at least one move
+                    if (getPossibleMoves(currPlayer % 2 != 0).size() == 0) {
+                        // switch game status back to prev player
+                        tempVar = currOpponent;
+                        currOpponent = currPlayer;
+                        currPlayer = tempVar;
+                    }
+                    return true;
+                }
             }
         }
         return false;
-
     }
 
     /**
@@ -156,7 +172,7 @@ public class OthelloGame extends BasicBoard implements Game {
         if (movesX == null) { movesX = new ArrayList<>(); }
         if (movesO == null) { movesO = new ArrayList<>(); }
 
-        if(movesX.size() == 0 && movesO.size() == 0){ // no more moves possible
+        if((movesX.size() == 0 && movesO.size() == 0)){ // no more moves possible
             int[] pieceCount = countPiecesOnBoard(); // [countX, countO]
             if (pieceCount[0] > pieceCount[1]){ // xCount > oCount?
                 return GameStatus.PLAYER_1_WON;
@@ -300,7 +316,6 @@ public class OthelloGame extends BasicBoard implements Game {
                 }
             }
         }
-
 
         return possibleMoves;
     }

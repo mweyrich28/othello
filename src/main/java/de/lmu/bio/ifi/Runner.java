@@ -1,13 +1,11 @@
 package de.lmu.bio.ifi;
 
-import javafx.application.Application;
+import szte.mi.KI_1;
 import szte.mi.KI_Random;
 import szte.mi.Move;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Random;
 
 public class Runner {
@@ -36,32 +34,32 @@ public class Runner {
 
         FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
         ArrayList<Move> moves = readMoves(reader);
-        OthelloGame o = new OthelloGame(1);
-        KI_Random p2 = new KI_Random();
+        OthelloGame o = new OthelloGame();
+
         int c = 0;
-        // for (Move m : moves) {
-        //     o.makeMove(c%2==0, m.x, m.y);
-        //     System.out.println(o.gameStatus().toString());
-        //     System.out.println(o.toString());
-        //     System.out.println("Next move: " + o.getCurrPlayer());
-        //     if (o.getPossibleMoves(false) == null && o.getPossibleMoves(true) == null) {
-        //         System.out.println("Moves for player 1: null");
-        //         System.out.println("Moves for player 2: null");
-        //     }
-        //     else if (o.getPossibleMoves(true) == null){
-        //         System.out.println("Moves for player 1: null");
-        //         System.out.println("Moves for player 2: " +o.getPossibleMoves(false).size());
-        //     }
-        //     else if (o.getPossibleMoves(false) == null){
-        //         System.out.println("Moves for player 1: " +o.getPossibleMoves(true).size());
-        //         System.out.println("Moves for player 2: null");
-        //     }
-        //     else {
-        //         System.out.println("Moves for player 1: " +o.getPossibleMoves(true).size());
-        //         System.out.println("Moves for player 2: " +o.getPossibleMoves(false).size());
-        //     }
-        //     c++;
-        // }
-        OthelloGui.main(args);
+        for (Move m : moves) {
+            o.makeMove(c%2==0, m.x, m.y);
+            System.out.println(o.gameStatus().toString());
+            System.out.println(o.toString());
+            System.out.println("Next move: " + o.getCurrPlayer());
+            if (o.getPossibleMoves(false) == null && o.getPossibleMoves(true) == null) {
+                System.out.println("Moves for player 1: null");
+                System.out.println("Moves for player 2: null");
+            }
+            else if (o.getPossibleMoves(true) == null){
+                System.out.println("Moves for player 1: null");
+                System.out.println("Moves for player 2: " +o.getPossibleMoves(false).size());
+            }
+            else if (o.getPossibleMoves(false) == null){
+                System.out.println("Moves for player 1: " +o.getPossibleMoves(true).size());
+                System.out.println("Moves for player 2: null");
+            }
+            else {
+                System.out.println("Moves for player 1: " +o.getPossibleMoves(true).size());
+                System.out.println("Moves for player 2: " +o.getPossibleMoves(false).size());
+            }
+            c++;
+        }
+        //OthelloGui.main(args);
     }
 }
