@@ -81,13 +81,15 @@ public class KI_1 implements Player{
 
         // for each move recurse
         for (Move move : possibleMoves) {
-            double tempScore = miniMaxValue(applyMove(this.othelloGame, move), this.othelloGame, 1);
+            double tempScore = miniMaxValue(applyMove(this.othelloGame, move), this.othelloGame, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
             if (tempScore >= bestScore){
                 bestMove = move;
                 bestScore = tempScore;
             }
         }
-        return bestMove;
+        if(possibleMoves.contains(bestMove)){
+            return bestMove;
+        } else return null;
     }
 
     public OthelloGame applyMove(OthelloGame state, Move move) {
@@ -104,7 +106,7 @@ public class KI_1 implements Player{
         return gameCopy;
     }
 
-    public double miniMaxValue(OthelloGame state, OthelloGame game, int depth){
+    public double miniMaxValue(OthelloGame state, OthelloGame game, int depth, double alpha, double beta){
         if(terminalRec(state, depth)){
             return scoringFunc(state);
         }
@@ -114,8 +116,12 @@ public class KI_1 implements Player{
 
             for (Move move : possibleMoves) {
                 OthelloGame newState = applyMove(state, move);
-                double score = miniMaxValue(newState, game, depth - 1);
+                double score = miniMaxValue(newState, game, depth - 1, alpha, beta);
                 maxScore = Math.max(maxScore, score);
+                alpha = Math.max(alpha, score);
+                if (beta <= alpha) {
+                    break; // Beta cut-off
+                }
             }
 
             // System.out.println("Max score " + maxScore);
@@ -128,8 +134,12 @@ public class KI_1 implements Player{
 
             for (Move move : possibleMoves) {
                 OthelloGame newState = applyMove(state, move);
-                double score = miniMaxValue(newState, game, depth - 1);
+                double score = miniMaxValue(newState, game, depth - 1, alpha, beta);
                 minScore = Math.min(minScore, score);
+                beta = Math.min(beta, score);
+                if (beta <= alpha) {
+                    break; // Alpha cut-off
+                }
             }
 
             // System.out.println("Min score " + minScore);

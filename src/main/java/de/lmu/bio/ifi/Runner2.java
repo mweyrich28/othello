@@ -8,25 +8,25 @@ import java.util.Random;
 
 public class Runner2 {
     public static void main(String[] args){
-        KI_1 p2 = new KI_1();
-        KI_Random p1 = new KI_Random();
+        KI_1 p1 = new KI_1();
+        KI_Random p2 = new KI_Random();
 
         Move last = null;
         int win = 0;
         int draw = 0;
 
         long startTime, endTime;
-        for (int j = 1; j <= 100; j++) {
+        for (int j = 1; j <= 1; j++) {
             startTime = System.currentTimeMillis();
             OthelloGame o = new OthelloGame();
             p1.init(0, (long) 8.000, new Random());
             p2.init(1, (long) 8.000, new Random());
 
             while(o.gameStatus() == GameStatus.RUNNING){
-                if(p1.getOthelloGame().gameStatus() != GameStatus.RUNNING || p2.getOthelloGame().gameStatus() != GameStatus.RUNNING ){
-                    System.out.println("P1!!!!!!!!!!!!");
-                    break;
-                }
+                // if(p1.getOthelloGame().gameStatus() != GameStatus.RUNNING || p2.getOthelloGame().gameStatus() != GameStatus.RUNNING ){
+                //     System.out.println("P1!!!!!!!!!!!!");
+                //     break;
+                // }
 
                 if(o.getCurrPlayer() == 1){
                     last = p1.nextMove(last, 1, 1);
@@ -65,9 +65,9 @@ public class Runner2 {
             System.out.println(win + " wins");
             System.out.println(draw + " draws");
             System.out.println(j - win + " losses");
-            System.out.println(o);
-            System.out.println(p1.getOthelloGame());
-            System.out.println(p2.getOthelloGame());
+            // System.out.println(o);
+            // System.out.println(p1.getOthelloGame());
+            // System.out.println(p2.getOthelloGame());
 
             if (o.gameStatus() == GameStatus.RUNNING){
                 // OthelloGame copy = new OthelloGame();

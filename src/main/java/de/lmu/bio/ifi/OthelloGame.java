@@ -231,7 +231,7 @@ public class OthelloGame extends BasicBoard implements Game {
 
 
     // Get all empty fields next to opponent
-    public ArrayList<Integer[]> getAnchorNodes(boolean playerOne){
+    public ArrayList<Integer[]> getAnchorNodes(){
         ArrayList<Integer[]> anchorNodes = new ArrayList<>();
         HashSet<String> seenCoordinates = new HashSet<>();
         for (Move madeMove : moveHistroy) {
@@ -304,7 +304,7 @@ public class OthelloGame extends BasicBoard implements Game {
         }
 
         ArrayList<Move> possibleMoves = new ArrayList<>();
-        ArrayList<Integer[]> moveAnchors = getAnchorNodes(playerOne);
+        ArrayList<Integer[]> moveAnchors = getAnchorNodes();
         HashSet<String> seenCoordinates = new HashSet<>(); // TODO: refactor duplicate code
 
         for (Integer[] cord : moveAnchors) {
