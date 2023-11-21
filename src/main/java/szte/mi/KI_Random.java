@@ -54,7 +54,7 @@ public class KI_Random implements Player {
     }
     public OthelloGame copyGame(OthelloGame game) {
 
-        OthelloGame gameCopy = new OthelloGame(true);
+        OthelloGame gameCopy = new OthelloGame();
         // gameCopy.getMoveHistroy().clear();
         boolean playerSwitch = false;
         for (int i = 0; i < 8; i++) {

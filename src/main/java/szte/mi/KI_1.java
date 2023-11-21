@@ -136,7 +136,7 @@ public class KI_1 implements Player{
 
     public OthelloGame copyGame(OthelloGame game, GameStatus status) {
 
-        OthelloGame gameCopy = new OthelloGame(true);
+        OthelloGame gameCopy = new OthelloGame();
         // gameCopy.getMoveHistroy().clear();
         boolean playerSwitch = true;
         for (int i = 0; i < 8; i++) {

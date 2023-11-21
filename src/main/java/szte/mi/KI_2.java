@@ -104,7 +104,7 @@ public class KI_2 implements Player{
 
         GameStatus status = othelloGame.gameStatus();
         int depth = 4;
-        if(possibleMoves.size() <= 8){
+        if(possibleMoves.size() <= 10){
            depth = 5;
         }
         // for each move recurse

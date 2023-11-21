@@ -1,6 +1,7 @@
 package de.lmu.bio.ifi;
 
 import szte.mi.KI_1;
+import szte.mi.KI_2;
 import szte.mi.KI_Random;
 import szte.mi.Move;
 
@@ -9,8 +10,8 @@ import java.util.Random;
 
 public class Runner2 {
     public static void main(String[] args){
-        KI_1 p1 = new KI_1();
-        KI_1 p2 = new KI_1();
+        KI_2 p1 = new KI_2();
+        KI_Random p2 = new KI_Random();
 
         Move last = null;
         int win = 0;
@@ -68,13 +69,17 @@ public class Runner2 {
                 }
 
                 last = p1.nextMove(last, 1, 1);
-                o.makeMove(o.isPlayerOne(), last.x, last.y);
+                if (last != null){
+                    o.makeMove(o.isPlayerOne(), last.x, last.y);
+                }
                 if (o.gameStatus() != GameStatus.RUNNING){
                     break;
                 }
 
                 last = p2.nextMove(last, 1, 1);
-                o.makeMove(o.isPlayerOne(), last.x, last.y);
+                if (last != null){
+                    o.makeMove(o.isPlayerOne(), last.x, last.y);
+                }
                 if (o.gameStatus() != GameStatus.RUNNING){
                     break;
                 }

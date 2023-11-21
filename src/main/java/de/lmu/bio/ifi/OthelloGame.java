@@ -1,8 +1,11 @@
 package de.lmu.bio.ifi;
+
 import de.lmu.bio.ifi.basicpackage.BasicBoard;
 import szte.mi.Move;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class OthelloGame extends BasicBoard implements Game {
     final private int GAMESIZE = 8;
@@ -35,11 +38,6 @@ public class OthelloGame extends BasicBoard implements Game {
 
         this.order = order;
     }
-
-    public void setMoveHistroy(ArrayList<PlayerMove> moveHistroy) {
-        this.moveHistroy = moveHistroy;
-    }
-
     public OthelloGame(){
         //super.board = new int[GAMESIZE][GAMESIZE];
         //initGameBoard(); // fill board with Zeros
@@ -58,21 +56,6 @@ public class OthelloGame extends BasicBoard implements Game {
         moveHistroy.add(new PlayerMove(3, 4));
         moveHistroy.add(new PlayerMove(3, 3));
         moveHistroy.add(new PlayerMove(4, 4));
-    }
-
-    public OthelloGame(boolean copy){
-        if (copy){
-            super.board = new int[][] {
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0}
-            };
-        }
     }
 
     public void setBoard(int[][] newBoard) {
