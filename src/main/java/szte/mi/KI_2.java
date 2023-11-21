@@ -5,12 +5,9 @@ import de.lmu.bio.ifi.OthelloGame;
 import de.lmu.bio.ifi.PlayerMove;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.concurrent.atomic.DoubleAccumulator;
 
-public class KI_1 implements Player{
+public class KI_2 implements Player{
     private long timeLeft;
     private Random rnd;
     private OthelloGame othelloGame;
@@ -47,7 +44,7 @@ public class KI_1 implements Player{
         return othelloGame;
     }
 
-    public void init(int order, long t, java.util.Random rnd){
+    public void init(int order, long t, Random rnd){
         this.othelloGame = new OthelloGame(order);
         this.timeLeft = t;
         this.rnd = rnd;
@@ -62,18 +59,19 @@ public class KI_1 implements Player{
         if (prevMove != null) { // append move to local game if there was a last move
             othelloGame.makeMove(othelloGame.isPlayerOne(), prevMove.x, prevMove.y);
             if(othelloGame.gameStatus() != GameStatus.RUNNING){
-                return prevMove;
+                return null;
             }
         }
 
+        //if (prevMove == null && othelloGame.gameStatus() == GameStatus.RUNNING)
+
         if (othelloGame.getPossibleMoves(othelloGame.isPlayerOne()).size() == 0){
-            return prevMove;
+            return null;
         }
 
         if (othelloGame.getCurrPlayer() - 1 != order ) {
-            return prevMove;
+            return null;
         }
-
 
         long startTime = System.nanoTime(); // Record start time
 
@@ -93,7 +91,7 @@ public class KI_1 implements Player{
             return m;
         } else {
             //othelloGame.incrementMovesPassed();
-            return prevMove; // if m == null then the player has to pass
+            return null; // if m == null then the player has to pass
         }
     }
 
@@ -136,8 +134,8 @@ public class KI_1 implements Player{
 
     public OthelloGame copyGame(OthelloGame game, GameStatus status) {
 
-        OthelloGame gameCopy = new OthelloGame(true);
-        // gameCopy.getMoveHistroy().clear();
+        OthelloGame gameCopy = new OthelloGame();
+        gameCopy.getMoveHistroy().clear();
         boolean playerSwitch = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {

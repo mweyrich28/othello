@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import de.lmu.bio.ifi.OthelloGame;
+import de.lmu.bio.ifi.PlayerMove;
 
 public class KI_Random implements Player {
     private long timeLeft;
@@ -34,6 +35,10 @@ public class KI_Random implements Player {
         if (prevMove != null){ // append move to local game
             othelloGame.makeMove(othelloGame.getCurrPlayer() % 2 != 0, prevMove.x, prevMove.y);
         }
+        if(this.order != othelloGame.getCurrPlayer()-1) {
+           return prevMove;
+        }
+
 
         // react to a previous move
         ArrayList<Move> possibleMoves = (ArrayList<Move>) othelloGame.getPossibleMoves(othelloGame.getCurrPlayer() % 2 != 0);
@@ -44,7 +49,33 @@ public class KI_Random implements Player {
             othelloGame.makeMove(order==0, nextMove.x, nextMove.y);
             return nextMove;
         } else {
-            return null;
+            return prevMove;
         }
+    }
+    public OthelloGame copyGame(OthelloGame game) {
+
+        OthelloGame gameCopy = new OthelloGame(true);
+        // gameCopy.getMoveHistroy().clear();
+        boolean playerSwitch = false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                int currField = game.getBoard()[j][i];
+                if(currField != 0){
+                    gameCopy.getBoard()[j][i] = currField;
+                    gameCopy.getMoveHistroy().add(new PlayerMove(j, i, playerSwitch));
+                    playerSwitch = !playerSwitch;
+                }
+            }
+        }
+        gameCopy.setCurrOpponent(game.getCurrOpponent());
+        gameCopy.setCurrPlayer(game.getCurrPlayer());
+        gameCopy.setStatus(game.gameStatus());
+
+
+        return gameCopy;
+    }
+    // for testing
+    public void appendGameState(OthelloGame game){
+        this.othelloGame = copyGame(game);
     }
 }

@@ -15,16 +15,14 @@ import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import szte.mi.KI_Random;
-import szte.mi.Move;
-import szte.mi.Player;
+import szte.mi.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class OthelloGui extends Application {
     Player p1;
-    KI_Random p2;
+    KI_2 p2;
     Move lastMove;
     // Global score for both players
     private int scoreP1 = 0;
@@ -282,7 +280,7 @@ public class OthelloGui extends Application {
 
         // RadioButtons for choosing game scenario
         RadioButton rb1 = new RadioButton("Player vs. Player");
-        RadioButton rb2 = new RadioButton("Player vs. Random");
+        RadioButton rb2 = new RadioButton("Player vs. KI");
         // RadioButton rb3 = new RadioButton("Random vs. Random");
         ToggleGroup tg = new ToggleGroup();
         rb1.setToggleGroup(tg);
@@ -325,7 +323,7 @@ public class OthelloGui extends Application {
         primaryStage.show();
     }
     public void playerVSKI(){
-        KI_Random p2 = new KI_Random();
+        KI_2 p2 = new KI_2();
         this.p2 = p2;
 
         // switch order so starting player alternates
