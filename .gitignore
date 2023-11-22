@@ -37,3 +37,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Othello CSV
+/src/main/java/de/lmu/bio/ifi/othello_dataset.csv
