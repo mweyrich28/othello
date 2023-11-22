@@ -64,6 +64,7 @@ public class Runner2 {
             //System.out.println(o);
             //last = new Move(2,2);
             while(o.gameStatus() == GameStatus.RUNNING){
+                int isNull = 0;
                 if(p1.getOthelloGame().gameStatus() != GameStatus.RUNNING || p2.getOthelloGame().gameStatus() != GameStatus.RUNNING ){
                     break;
                 }
@@ -71,6 +72,8 @@ public class Runner2 {
                 last = p1.nextMove(last, 1, 1);
                 if (last != null){
                     o.makeMove(o.isPlayerOne(), last.x, last.y);
+                } else {
+                    isNull++;
                 }
                 if (o.gameStatus() != GameStatus.RUNNING){
                     break;
@@ -79,12 +82,17 @@ public class Runner2 {
                 last = p2.nextMove(last, 1, 1);
                 if (last != null){
                     o.makeMove(o.isPlayerOne(), last.x, last.y);
+                }else {
+                    isNull++;
                 }
                 if (o.gameStatus() != GameStatus.RUNNING){
                     break;
                 }
 
 
+                if(isNull == 2){
+                    break;
+                }
             }
             System.out.println("ROUND " + j);
             System.out.println(o.gameStatus().toString());

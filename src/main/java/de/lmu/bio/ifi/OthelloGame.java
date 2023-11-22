@@ -14,6 +14,7 @@ public class OthelloGame extends BasicBoard implements Game {
     private int order;
     private int currOpponent = 2;
     private int movesPassed = 0;
+    private ArrayList<Move> currPossibleMoves = new ArrayList<>();
     private boolean playerOne = true;
     // {x, y}                       right  down     up     left     dtl     dbr    dbl      dtr
     private final int[][] directions = {{1,0}, {0,1}, {0,-1}, {-1,0}, {-1,-1}, {1,1}, {1,-1}, {-1,1}};
@@ -56,6 +57,10 @@ public class OthelloGame extends BasicBoard implements Game {
         moveHistroy.add(new PlayerMove(3, 4));
         moveHistroy.add(new PlayerMove(3, 3));
         moveHistroy.add(new PlayerMove(4, 4));
+    }
+
+    public ArrayList<Move> getCurrPossibleMoves() {
+        return currPossibleMoves;
     }
 
     public void setBoard(int[][] newBoard) {
@@ -150,6 +155,11 @@ public class OthelloGame extends BasicBoard implements Game {
         }
         return sb.toString();
     }
+
+    public int getMovesPassed() {
+        return movesPassed;
+    }
+
     /**
      * Make a move for the given player at the given position.
      *
@@ -166,7 +176,7 @@ public class OthelloGame extends BasicBoard implements Game {
         }
         else if (validMoves.size() == 0){
             moveHistroy.add(new PlayerMove(-1,-1, playerOne)); // here we add a move to mark a pass
-
+            movesPassed++;
             int temp = this.currPlayer;
             this.currPlayer = this.currOpponent;
             this.currOpponent = temp;
@@ -184,7 +194,6 @@ public class OthelloGame extends BasicBoard implements Game {
 
                     // add to history
                     moveHistroy.add(new PlayerMove(move.x, move.y, playerOne));
-                    movesPassed = 0; // reset counter (for end game condition)
                     status = gameStatus();
 
                     // after we made the move, owe update player and opponent
@@ -310,6 +319,7 @@ public class OthelloGame extends BasicBoard implements Game {
                 }
             }
         }
+        this.currPossibleMoves = possibleMoves;
         return possibleMoves;
     }
 

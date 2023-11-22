@@ -97,14 +97,16 @@ public class KI_2 implements Player{
 
     public Move miniMaxDecision(){
         // get possible moves
-        ArrayList<Move> possibleMoves = (ArrayList<Move>) othelloGame.getPossibleMoves(othelloGame.getCurrPlayer() % 2 != 0);
+        // ArrayList<Move> possibleMoves = (ArrayList<Move>) othelloGame.getPossibleMoves(othelloGame.getCurrPlayer() % 2 != 0);
+        ArrayList<Move> possibleMoves = othelloGame.getCurrPossibleMoves();
+
 
         Move bestMove = null;
         double bestScore = Double.NEGATIVE_INFINITY;
 
         GameStatus status = othelloGame.gameStatus();
         int depth = 4;
-        if(possibleMoves.size() <= 10){
+        if(possibleMoves.size() <= 8){
            depth = 5;
         }
         // for each move recurse
@@ -222,11 +224,45 @@ public class KI_2 implements Player{
 
 
         // O(n)
+        double countMaxPieces = 0;
+        double countMinPieces = 0;
         for (Move m : moveHistory) {
-            if(game.getBoard()[m.x][m.y] == currentPlayer){
+            int currPiece = game.getBoard()[m.x][m.y];
+            if(currPiece == currentPlayer){
                 score+= scoringMat2[m.y][m.x];
+                countMaxPieces++;
+            } else if ( currPiece == game.getCurrOpponent()){
+                countMinPieces++;
+                score -= scoringMat2[m.y][m.x]; // Subtract opponent's pieces' score
             }
         }
+
+        // Get the number of legal moves for the current player
+        ArrayList<Move> possMoves = game.getCurrPossibleMoves();
+        if (possMoves != null){
+            int currentPlayerMoves = possMoves.size();
+            score += currentPlayerMoves * 0.2;
+        }
+
+
+        double totalPieces = countMaxPieces + countMinPieces;
+        if (totalPieces < 32) {
+            // Early game strategy: Prioritize fewer pieces for the max player
+            score += (countMinPieces - countMaxPieces) * 0.1; // Adjust the weight as needed
+        } else {
+            // Late game strategy: Prioritize having more pieces for the max player
+            score += (countMaxPieces - countMinPieces) * 0.1; // Adjust the weight as needed
+        }
+
+        int movesPassed = game.getMovesPassed();
+
+        if ((movesPassed % 2 == 0 && currentPlayer == 1) || (movesPassed % 2 != 0 && currentPlayer == 2)) {
+            score += 50; // Value for having an odd number of passes for Black (Player 1)
+        } else {
+            score += 50; // Value for having an even number of passes for White (Player 2)
+        }
+
+
         return score;
     }
 
