@@ -35,10 +35,10 @@ public class Runner {
 
     public static void main(String args[]) throws Exception {
 
-        FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
-        ArrayList<Move> moves = readMoves(reader);
-        OthelloGame o = new OthelloGame();
-        int c = 0;
+        //FileReader reader = new FileReader(new File("/home/malte/01_Documents/projects/othello/src/main/java/de/lmu/bio/ifi/moves.tsv"));
+        //ArrayList<Move> moves = readMoves(reader);
+        //OthelloGame o = new OthelloGame();
+        //int c = 0;
     //    KI_1 ki = new KI_1();
     //    KI_1 ki1 = new KI_1();
     //    ki.init(0, 1, new Random());
