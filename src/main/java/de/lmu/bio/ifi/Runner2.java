@@ -18,7 +18,7 @@ public class Runner2 {
         int draw = 0;
 
         long startTime, endTime;
-        for (int j = 1; j <= 100; j++) {
+        for (int j = 1; j <= 1; j++) {
             startTime = System.currentTimeMillis();
             OthelloGame o = new OthelloGame();
             p1.init(0, 8000, new Random());
@@ -72,6 +72,7 @@ public class Runner2 {
                 last = p1.nextMove(last, 1, 1);
                 if (last != null){
                     o.makeMove(o.isPlayerOne(), last.x, last.y);
+                    System.out.println(o);
                 } else {
                     isNull++;
                 }
@@ -82,6 +83,7 @@ public class Runner2 {
                 last = p2.nextMove(last, 1, 1);
                 if (last != null){
                     o.makeMove(o.isPlayerOne(), last.x, last.y);
+                    System.out.println(o);
                 }else {
                     isNull++;
                 }
@@ -131,3 +133,4 @@ public class Runner2 {
         }
     }
 }
+
