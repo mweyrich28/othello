@@ -19,7 +19,7 @@
         <resources>
             <resource>
                 <!-- include sources in jar -->
-                <directory></directory>
+                <directory>src/main/java</directory>
            </resource>
         </resources>
 
