@@ -1,5 +1,5 @@
 # Othello Project
-Was part if a uni programming course
+Was part of a uni programming course
 ![gui](./media/gui.png)
 
 ## KI
